@@ -265,6 +265,32 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>370</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Delete</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>370</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>label_3</zorder>
    <zorder>label_2</zorder>
@@ -279,6 +305,8 @@
    <zorder>lineEdit_2</zorder>
    <zorder>lineEdit_3</zorder>
    <zorder>lineEdit_4</zorder>
+   <zorder>pushButton_2</zorder>
+   <zorder>pushButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -295,4 +323,3 @@
  <resources/>
  <connections/>
 </ui>
-
