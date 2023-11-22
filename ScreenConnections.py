@@ -1,5 +1,6 @@
 # Importing essential modules
-from PyQt6 import QtWidgets, uic
+import typing
+from PyQt6 import QtCore, QtWidgets, uic
 from PyQt6.QtCore import QDate
 from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QHeaderView, QMessageBox, QLineEdit
 import sys
@@ -25,10 +26,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.LoginBox.addItem("Ground Manager")
         self.LoginBox.addItem("Flight Manager")
         self.LoginBox.addItem("Airport Manager")
+        self.LoginBox.addItem("Aircraft Manager")
 
         # Instances to store windows
         self.ground_manager_window = None
         self.flight_manager_window = None
+        self.airport_manager_window=None
+        self.aircraft_manager_window=None
 
     def Next(self):
         
@@ -55,6 +59,11 @@ class MainWindow(QtWidgets.QMainWindow):
                         self.open_ground_manager()  # calls the open_ground_manager func
             elif login_as == "Flight Manager":
                         self.open_flight_manager()
+            elif login_as=="Airport Manager":
+                    self.open_airport_manager()
+            elif login_as=="Aircraft Manager":
+                 self.open_aircraft_manager()
+            
 
 
     def open_ground_manager(self):
@@ -67,8 +76,23 @@ class MainWindow(QtWidgets.QMainWindow):
         if not self.flight_manager_window: 
             self.flight_manager_window = FlightManagerWindow() 
         self.hide() 
-        self.flight_manager_window.show()  
- 
+        self.flight_manager_window.show()
+
+
+    def open_airport_manager(self):
+        if not self.flight_manager_window: 
+            self.airport_manager_window = AirportManagerWindow() 
+        self.hide() 
+        self.airport_manager_window.show()  
+
+    def open_aircraft_manager(self):
+        if not self.aircraft_manager_window:
+              self.aircraft_manager_window=AircraftManagerWindow()
+        self.hide()
+        self.aircraft_manager_window.show()
+              
+
+
 
 class GroundManagerWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -88,11 +112,58 @@ class GroundManagerWindow(QtWidgets.QMainWindow):
         self.hide()
         self.runway_window = RunwayWindow()
         self.runway_window.show()
+
+
+
+class AircraftManagerWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(AircraftManagerWindow, self).__init__()
+        uic.loadUi("AircraftManager.ui", self)
+        self.setWindowTitle("Aircraft Manager")
+        self.show()
+        self.aircraftBtn.clicked.connect(self.open_aircraft)
+        self.aircraftTypebtn.clicked.connect(self.open_aircraftType)
+    def open_aircraft(self):
+         self.hide()
+         self.aircraft_window=AircraftWindow()
+         self.aircraft_window.show()
+    def open_aircraftType(self):
+         self.hide()
+         self.aircraftType_window=AircraftTypeWindow()
+         self.aircraftType_window.show()
+
+
 class FlightManagerWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(FlightManagerWindow, self).__init__()
         uic.loadUi("FlightManager.ui", self)
         self.setWindowTitle("Flight Manager")
+        self.show()
+        self.flightBtn.clicked.connect(self.open_flight)
+        self.flightTypeBtn.clicked.connect(self.open_flightType)
+        self.flightStatusBtn.clicked.connect(self.open_flightStatus)
+    def open_flight(self):
+         self.hide()
+         self.flight_window=FlightWindow()
+         self.flight_window.show()
+    def open_flightType(self):
+         self.hide()
+         self.flightType_window=flightTypeWindow()
+         self.flightType_window.show()
+    def open_flightStatus(self):
+         self.hide()
+         self.flightStatus_window=flightStatusWindow()
+         self.flightStatus_window.show()
+        
+        
+
+
+
+class AirportManagerWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(AirportManagerWindow, self).__init__()
+        uic.loadUi("airportManager.ui", self)
+        self.setWindowTitle("Airport Manager")
         self.show()
 
 class TerminalWindow(QtWidgets.QMainWindow):
@@ -117,6 +188,47 @@ class TerminalWindow(QtWidgets.QMainWindow):
         self.TerminalTable.setItem(row_count, 0, item1 )
         self.TerminalTable.setItem(row_count, 1, item2)
         self.Terminal_ID+=1
+
+class AircraftWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(AircraftWindow, self).__init__()
+        uic.loadUi("aircraft .ui", self)
+        self.setWindowTitle("Aircraft")
+        self.show()
+        
+class AircraftTypeWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(AircraftTypeWindow, self).__init__()
+        uic.loadUi("aircraft type.ui", self)
+        self.setWindowTitle("Aircraft Type")
+        self.show()
+        self.addType.clicked.connect(self.addType)
+
+
+class FlightWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(FlightWindow, self).__init__()
+        uic.loadUi("flight .ui", self)
+        self.setWindowTitle("Flight")
+        self.show()
+
+
+class flightTypeWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(flightTypeWindow, self).__init__()
+        uic.loadUi("flight type.ui", self)
+        self.setWindowTitle("Flight Type")
+        self.show()
+
+class flightStatusWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(flightStatusWindow, self).__init__()
+        uic.loadUi("flight status .ui", self)
+        self.setWindowTitle("Flight Status")
+        self.show()
+
+
+        
 class RunwayWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(RunwayWindow, self).__init__()
@@ -144,6 +256,35 @@ class RunwayWindow(QtWidgets.QMainWindow):
             self.RunwayTable.setItem(row_count, 0, item1)
             self.RunwayTable.setItem(row_count, 1, item2)
             self.RunwayTable.setItem(row_count, 2, item3)
+
+
+class AircraftTypeWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(AircraftTypeWindow, self).__init__()
+        uic.loadUi("aircraft type.ui", self)
+        self.setWindowTitle("Aircarft Type")
+        self.show()
+    #     self.RAddBtn.clicked.connect(self.addRunway)
+    #     self.Runway_ID = 1
+    # def addRunway(self):
+    #     RunwayNum = self.RunwayNum.text()
+    #     RunwayLen = self.RunwayLen.text()
+    #     if not(RunwayNum.isnumeric() and RunwayLen.isnumeric()):
+    #         output = QMessageBox(self)              
+    #         output.setWindowTitle("ERROR") 
+    #         output.setText("Please enter Numeric values only")
+    #         output.setStandardButtons(QMessageBox.StandardButton.Ok)
+    #         output.setIcon(QMessageBox.Icon.Warning) 
+    #         output.exec()
+    #     else:
+    #         row_count = self.RunwayTable.rowCount()
+    #         self.RunwayTable.insertRow(row_count)
+    #         item1 = QTableWidgetItem(str(self.Runway_ID))
+    #         item2 = QTableWidgetItem(RunwayNum)
+    #         item3 = QTableWidgetItem(RunwayLen)
+    #         self.RunwayTable.setItem(row_count, 0, item1)
+    #         self.RunwayTable.setItem(row_count, 1, item2)
+    #         self.RunwayTable.setItem(row_count, 2, item3)
 
 app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
