@@ -177,7 +177,7 @@
    <widget class="QPushButton" name="Delete">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>470</x>
       <y>240</y>
       <width>93</width>
       <height>28</height>
@@ -190,7 +190,7 @@
    <widget class="QPushButton" name="Add">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>350</x>
       <y>240</y>
       <width>93</width>
       <height>28</height>
@@ -198,6 +198,19 @@
     </property>
     <property name="text">
      <string>Add</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="airportBack">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>240</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Back</string>
     </property>
    </widget>
   </widget>
