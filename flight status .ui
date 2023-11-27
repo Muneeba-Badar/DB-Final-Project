@@ -17,35 +17,35 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>20</x>
       <y>20</y>
-      <width>91</width>
+      <width>81</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Flight Status:</string>
+     <string>Flight Type:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>40</x>
       <y>60</y>
-      <width>91</width>
+      <width>81</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Flight Status ID</string>
+     <string>Flight Type ID</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>130</x>
       <y>60</y>
-      <width>541</width>
+      <width>591</width>
       <height>22</height>
      </rect>
     </property>
@@ -54,21 +54,21 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>120</y>
-      <width>81</width>
+      <y>100</y>
+      <width>55</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Flight Status</string>
+     <string>Name</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboBox">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>120</y>
-      <width>541</width>
+      <x>130</x>
+      <y>100</y>
+      <width>591</width>
       <height>22</height>
      </rect>
     </property>
@@ -76,8 +76,8 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>170</y>
+      <x>590</x>
+      <y>140</y>
       <width>93</width>
       <height>28</height>
      </rect>
@@ -89,8 +89,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>170</y>
+      <x>490</x>
+      <y>140</y>
       <width>93</width>
       <height>28</height>
      </rect>
@@ -99,24 +99,11 @@
      <string>Add</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="flightStatusBack_2">
+   <widget class="QPushButton" name="flightTypeBack">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>170</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Back</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="flightStatusBack">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>170</y>
+      <x>690</x>
+      <y>140</y>
       <width>93</width>
       <height>28</height>
      </rect>
