@@ -73,10 +73,10 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="deleteType">
+   <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>560</x>
       <y>150</y>
       <width>93</width>
       <height>28</height>
@@ -86,10 +86,10 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="addType">
+   <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>460</x>
       <y>150</y>
       <width>93</width>
       <height>28</height>
@@ -99,7 +99,7 @@
      <string>Add</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="addAircraft_2">
+   <widget class="QPushButton" name="aircraftTypeBack">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -107,6 +107,11 @@
       <width>93</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Back</string>
