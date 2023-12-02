@@ -32,7 +32,7 @@
      <string>Flight Type:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="FTdel">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -71,7 +71,7 @@
    <widget class="QPushButton" name="flightTypeBack">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>630</x>
       <y>390</y>
       <width>111</width>
       <height>31</height>
@@ -137,7 +137,7 @@
      <string>Delete Flight Type:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="FlightType_2">
+   <widget class="QLineEdit" name="delFTline">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -152,7 +152,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="FTtable">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -171,6 +171,24 @@
       <string>Flight Type</string>
      </property>
     </column>
+   </widget>
+   <widget class="QPushButton" name="flightTypeView">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>390</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>View</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>809</width>
+    <width>904</width>
     <height>570</height>
    </rect>
   </property>
@@ -50,7 +50,7 @@
      <string>Country:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_3">
+   <widget class="QComboBox" name="Country">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -83,7 +83,7 @@
      <string>City:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_4">
+   <widget class="QComboBox" name="City">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -137,8 +137,8 @@
    <widget class="QPushButton" name="airportBack">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>410</y>
+      <x>670</x>
+      <y>390</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -170,7 +170,7 @@
      <string>Airport Details</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="AirportName">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -185,15 +185,20 @@
      </font>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="AirportTable">
     <property name="geometry">
      <rect>
       <x>430</x>
       <y>140</y>
-      <width>361</width>
+      <width>431</width>
       <height>231</height>
      </rect>
     </property>
+    <column>
+     <property name="text">
+      <string>Airport ID</string>
+     </property>
+    </column>
     <column>
      <property name="text">
       <string>Airport Name</string>
@@ -210,7 +215,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="delAirportName">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -246,13 +251,31 @@
      <string>Delete Airport Name:</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="airportView">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>390</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>View</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>809</width>
+     <width>904</width>
      <height>21</height>
     </rect>
    </property>

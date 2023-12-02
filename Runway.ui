@@ -168,7 +168,7 @@
    <widget class="QPushButton" name="RBackBtn">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>620</x>
       <y>430</y>
       <width>151</width>
       <height>28</height>
@@ -187,7 +187,7 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>360</y>
+      <y>350</y>
       <width>221</width>
       <height>22</height>
      </rect>
@@ -217,6 +217,24 @@
     </property>
     <property name="text">
      <string>Delete Runway Number:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="RViewBtn">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>430</y>
+      <width>151</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>View</string>
     </property>
    </widget>
   </widget>
