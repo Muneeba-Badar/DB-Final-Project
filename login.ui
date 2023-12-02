@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>657</width>
-    <height>518</height>
+    <width>807</width>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>90</y>
-      <width>451</width>
+      <x>170</x>
+      <y>110</y>
+      <width>481</width>
       <height>121</height>
      </rect>
     </property>
@@ -40,6 +40,11 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
     </widget>
     <widget class="QLabel" name="label_3">
      <property name="geometry">
@@ -50,6 +55,11 @@
        <height>21</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>Login As:</string>
      </property>
@@ -58,9 +68,9 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>230</y>
-      <width>451</width>
+      <x>170</x>
+      <y>250</y>
+      <width>481</width>
       <height>161</height>
      </rect>
     </property>
@@ -81,6 +91,11 @@
        <height>16</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>Username: </string>
      </property>
@@ -93,6 +108,11 @@
        <width>81</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Password:</string>
@@ -107,6 +127,11 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
     </widget>
     <widget class="QLineEdit" name="Password">
      <property name="geometry">
@@ -117,6 +142,11 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
      </property>
@@ -125,9 +155,9 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>20</y>
-      <width>361</width>
+      <x>290</x>
+      <y>30</y>
+      <width>301</width>
       <height>51</height>
      </rect>
     </property>
@@ -146,11 +176,16 @@
    <widget class="QPushButton" name="NextBtn">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>420</y>
-      <width>93</width>
+      <x>530</x>
+      <y>430</y>
+      <width>121</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Next</string>
@@ -162,8 +197,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>657</width>
-     <height>26</height>
+     <width>807</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

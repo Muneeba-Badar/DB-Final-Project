@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Terminal</class>
- <widget class="QMainWindow" name="Terminal">
+ <class>TerminalNum</class>
+ <widget class="QMainWindow" name="TerminalNum">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
-    <height>585</height>
+    <width>809</width>
+    <height>569</height>
    </rect>
   </property>
   <property name="font">
@@ -22,10 +22,10 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>80</y>
-      <width>141</width>
-      <height>61</height>
+      <x>80</x>
+      <y>170</y>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -37,28 +37,13 @@
      <string>Terminal Number:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="TerminalNum">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>110</y>
-      <width>241</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-   </widget>
    <widget class="QPushButton" name="TAddBtn">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>160</y>
-      <width>93</width>
-      <height>28</height>
+      <x>260</x>
+      <y>220</y>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -73,10 +58,10 @@
    <widget class="QTableWidget" name="TerminalTable">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>240</y>
-      <width>261</width>
-      <height>281</height>
+      <x>480</x>
+      <y>150</y>
+      <width>221</width>
+      <height>241</height>
      </rect>
     </property>
     <column>
@@ -93,9 +78,9 @@
    <widget class="QPushButton" name="DeleteBtn">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>160</y>
-      <width>93</width>
+      <x>260</x>
+      <y>340</y>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
@@ -111,9 +96,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>20</y>
-      <width>171</width>
+      <x>350</x>
+      <y>30</y>
+      <width>161</width>
       <height>61</height>
      </rect>
     </property>
@@ -123,15 +108,15 @@
      </font>
     </property>
     <property name="text">
-     <string>Terminal</string>
+     <string>Terminal Details</string>
     </property>
    </widget>
    <widget class="QPushButton" name="TBackBtn">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>160</y>
-      <width>93</width>
+      <x>540</x>
+      <y>410</y>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
@@ -144,14 +129,52 @@
      <string>Back</string>
     </property>
    </widget>
+   <widget class="QLineEdit" name="TerminalNum_2">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>180</y>
+      <width>221</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>290</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Delete Terminal Number:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="DelTerminalNum">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>300</y>
+      <width>221</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>601</width>
-     <height>26</height>
+     <width>809</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

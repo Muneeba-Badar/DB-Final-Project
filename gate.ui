@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>586</width>
-    <height>579</height>
+    <width>809</width>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>151</width>
+      <x>350</x>
+      <y>30</y>
+      <width>121</width>
       <height>51</height>
      </rect>
     </property>
@@ -35,9 +35,9 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>35</x>
-      <y>100</y>
-      <width>71</width>
+      <x>90</x>
+      <y>170</y>
+      <width>81</width>
       <height>41</height>
      </rect>
     </property>
@@ -47,15 +47,15 @@
      </font>
     </property>
     <property name="text">
-     <string>Number</string>
+     <string>Gate Name:</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="GateNum">
     <property name="geometry">
      <rect>
-      <x>105</x>
-      <y>110</y>
-      <width>431</width>
+      <x>190</x>
+      <y>180</y>
+      <width>251</width>
       <height>22</height>
      </rect>
     </property>
@@ -63,9 +63,9 @@
    <widget class="QPushButton" name="GAddBtn">
     <property name="geometry">
      <rect>
-      <x>325</x>
-      <y>230</y>
-      <width>93</width>
+      <x>260</x>
+      <y>220</y>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
@@ -81,9 +81,9 @@
    <widget class="QPushButton" name="GDeleteBtn">
     <property name="geometry">
      <rect>
-      <x>445</x>
-      <y>230</y>
-      <width>93</width>
+      <x>260</x>
+      <y>340</y>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
@@ -99,15 +99,15 @@
    <widget class="QTableWidget" name="GateTable">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>300</y>
-      <width>491</width>
-      <height>201</height>
+      <x>510</x>
+      <y>150</y>
+      <width>271</width>
+      <height>221</height>
      </rect>
     </property>
     <column>
      <property name="text">
-      <string>New Column</string>
+      <string>Gate ID</string>
      </property>
     </column>
     <column>
@@ -119,9 +119,9 @@
    <widget class="QPushButton" name="GBackBtn">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>230</y>
-      <width>93</width>
+      <x>590</x>
+      <y>390</y>
+      <width>121</width>
       <height>28</height>
      </rect>
     </property>
@@ -134,14 +134,42 @@
      <string>Back</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>290</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Delete Gate Name:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="DelGateNum">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>300</y>
+      <width>251</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>586</width>
-     <height>26</height>
+     <width>809</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
