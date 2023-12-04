@@ -1115,11 +1115,46 @@ class airlineWindow(QtWidgets.QMainWindow):
         self.addAirline.clicked.connect(self.add_airline)
         self.deleteAirline.clicked.connect(self.delete_airline)
         self.viewAircraftBtn.clicked.connect(self.view_airline)
+        self.populateComboBoxCo(self.HQCountry)
+        self.populateComboBoxCi(self.HQCity)
         self.show()
     def open_airportManager(self):
         self.hide()
         self.ground_window=AirportManagerWindow()
         self.ground_window.show()
+#####################################################################   
+    def populateComboBoxCo(self, HQCountry):
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT  CountryName FROM Country")
+        data = cursor.fetchall()
+        for row in data:
+            self.HQCountry.addItem(row[0])
+            
+        connection.commit()
+        connection.close()
+##################################################################
+    def populateComboBoxCi(self, HQCity):
+        selected_country = self.HQCountry.currentText()
+        self.HQCity.clear()
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+
+        cursor.execute("""select CountryID from Country where CountryName = ?""", (selected_country,))
+        CountryID = cursor.fetchone()
+
+        cursor.execute("SELECT CityName FROM City WHERE CountryID = ?", (CountryID[0],))
+        data = cursor.fetchall()
+        for row in data:
+            self.HQCity.addItem(row[0])
+            
+        connection.commit()
+        connection.close()
+        
     def add_airline(self):
         connection = pyodbc.connect(
             f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
