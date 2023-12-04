@@ -1,18 +1,17 @@
 # Importing essential modules
 from PyQt6 import QtWidgets, uic
 from PyQt6.QtCore import QDate
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QHeaderView, QMessageBox, QLineEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QHeaderView, QMessageBox, QLineEdit, QComboBox
 import sys
 import pyodbc
 from datetime import datetime
 
 
 # Replace these with your own database connection details
-server = 'LAPTOP-CDQ2932B'
+server = 'AMNAH'
 database = 'AMS'  # Name of your database
 use_windows_authentication = True  # Set to True to use Windows Authentication
 
-# Main Window Class
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -174,15 +173,12 @@ class TerminalWindow(QtWidgets.QMainWindow):
         else:
             cursor.execute(sql_query, (TerminalNum_2))
             connection.commit()
-            
-            cursor.execute("select * from Termial")
-            # Fetch all rows and populate the table
-            for row_index, row_data in enumerate(cursor.fetchall()):
-                self.TerminalTable.insertRow(row_index)
-                for col_index, cell_data in enumerate(row_data):
-                    item = QTableWidgetItem(str(cell_data))
-                    self.TerminalTable.setItem(row_index, col_index, item)
-            connection.commit()
+            # Add only the new row to the table
+            row_index = self.TerminalTable.rowCount()
+            self.TerminalTable.insertRow(row_index)
+            item = QTableWidgetItem(TerminalNum_2)
+            self.TerminalTable.setItem(row_index, 1, item)  
+
             connection.close()
             
             output = QMessageBox(self)              
@@ -197,33 +193,32 @@ class TerminalWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
+        DelRow = self.TerminalTable.currentRow()
         
-        DelTerminalNum = self.DelTerminalNum.text()
-        
-        sql_query = """
-        DELETE FROM Termial
-        WHERE TerminalNumber = ?
-        """
-        cursor.execute(sql_query, (DelTerminalNum))
-        connection.commit()
-        
-        cursor.execute("select * from Termial")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.TerminalTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.TerminalTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Terminal Deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
-        
+        if DelRow > -1:
+            currentterminalid = (self.TerminalTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM Termial
+            WHERE TerminalId = ?
+            """
+            cursor.execute(sql_query, (currentterminalid,))
+            connection.commit()
+            self.TerminalTable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Terminal Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0:
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+
     def viewTerminal(self):
         connection = pyodbc.connect(
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
@@ -247,7 +242,7 @@ class RunwayWindow(QtWidgets.QMainWindow):
         self.show()
         self.RAddBtn.clicked.connect(self.addRunway)
         self.RBackBtn.clicked.connect(self.open_ground_manager)
-        self.RBackBtn.clicked.connect(self.deleteRunway)
+        self.RDeleteBtn.clicked.connect(self.deleteRunway)
         self.RViewBtn.clicked.connect(self.viewRunway)
 
     def addRunway(self):
@@ -274,16 +269,15 @@ class RunwayWindow(QtWidgets.QMainWindow):
         else:
             cursor.execute(sql_query, (RunwayNum, RunwayLen))
             connection.commit()
-            
-            cursor.execute("select * from Runway")
-            # Fetch all rows and populate the table
-            for row_index, row_data in enumerate(cursor.fetchall()):
-                self.RunwayTable.insertRow(row_index)
-                for col_index, cell_data in enumerate(row_data):
-                    item = QTableWidgetItem(str(cell_data))
-                    self.RunwayTable.setItem(row_index, col_index, item)
-            connection.commit()
-                
+            # Add only the new row to the table
+            row_index = self.RunwayTable.rowCount()
+            self.RunwayTable.insertRow(row_index)
+            item1 = QTableWidgetItem(RunwayNum)
+            item2 = QTableWidgetItem(RunwayLen)
+            self.TerminalTable.setItem(row_index, 1, item1) 
+            self.TerminalTable.setItem(row_index, 2, item2) 
+
+            connection.close()  
             output = QMessageBox(self)              
             output.setWindowTitle("Success") 
             output.setText("Runway added successfully!")
@@ -301,32 +295,30 @@ class RunwayWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        
-        DelRunwayNum = self.DelRunwayNum.text()
-        
-        sql_query = """
-        DELETE FROM Runway
-        WHERE RunwayNumber = ?
-        """
-        cursor.execute(sql_query, (DelRunwayNum))
-        connection.commit()
-        
-        cursor.execute("select * from Runway")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.RunwayTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.RunwayTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Runway Deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
+        DelRow = self.RunwayTable.currentRow()
+        if DelRow > -1:
+            currentrunwayid = (self.RunwayTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM Runway
+            WHERE RunwayNumber = ?
+            """
+            cursor.execute(sql_query, (currentrunwayid,))
+            connection.commit()
+            self.RunwayTable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Runway Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
     def viewRunway(self):
         connection = pyodbc.connect(
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
@@ -341,7 +333,101 @@ class RunwayWindow(QtWidgets.QMainWindow):
                 self.RunwayTable.setItem(row_index, col_index, item)
         connection.commit()
         connection.close()
+
+class GateWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(GateWindow, self).__init__()
+        uic.loadUi("gate.ui", self)
+        self.setWindowTitle("Gate")
+        self.GAddBtn.clicked.connect(self.add_gate)
+        self.show()
+        self.GBackBtn.clicked.connect(self.open_ground_manager)
+        self.GDeleteBtn.clicked.connect(self.deleteGate)
+        self.GViewBtn.clicked.connect(self.viewGate)
+
+    def add_gate(self):
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
         
+        sql_query = """
+        INSERT INTO Gate
+        ([GateName])
+        VALUES (?)
+        """
+        
+        GateNum = self.GateNum.text()
+        
+        cursor.execute(sql_query, (GateNum))
+        connection.commit()
+        
+        cursor.execute("select * from Gate")
+        # Fetch all rows and populate the table
+        for row_index, row_data in enumerate(cursor.fetchall()):
+            self.GateTable.insertRow(row_index)
+            for col_index, cell_data in enumerate(row_data):
+                item = QTableWidgetItem(str(cell_data))
+                self.GateTable.setItem(row_index, col_index, item)
+        connection.commit()
+        connection.close()
+        
+        output = QMessageBox(self)              
+        output.setWindowTitle("Success") 
+        output.setText("Gate added successfully!")
+        output.setStandardButtons(QMessageBox.StandardButton.Ok)
+        output.setIcon(QMessageBox.Icon.Information)
+        output.exec()
+
+    def open_ground_manager(self):
+        self.hide()
+        self.ground_window = GroundManagerWindow()
+        self.ground_window.show()
+        
+    def deleteGate(self):
+        connection = pyodbc.connect(
+        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+        DelRow = self.GateTable.currentRow()
+        if DelRow > -1:
+            currentgateid = (self.GateTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM Gate
+            WHERE GateName = ?
+            """
+            cursor.execute(sql_query, (currentgateid,))
+            connection.commit()
+            self.GateTable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Gate Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        
+    def viewGate(self):
+        connection = pyodbc.connect(
+        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+        cursor.execute("select * from Gate")
+        # Fetch all rows and populate the table
+        for row_index, row_data in enumerate(cursor.fetchall()):
+            self.GateTable.insertRow(row_index)
+            for col_index, cell_data in enumerate(row_data):
+                item = QTableWidgetItem(str(cell_data))
+                self.GateTable.setItem(row_index, col_index, item)
+        connection.commit()
+        connection.close()      
 
 class FlightManagerWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -521,32 +607,30 @@ class flightTypeWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        
-        delFTline = self.delFTline.text()
-        
-        sql_query = """
-        DELETE FROM FlightType
-        WHERE TypeName = ?
-        """
-        cursor.execute(sql_query, (delFTline))
-        connection.commit()
-        
-        cursor.execute("select * from FlightType")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.FTtable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.FTtable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Flight Type deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
+        DelRow = self.FTtable.currentRow()
+        if DelRow > -1:
+            currentflighttypeid = (self.FTtable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM FlightType
+            WHERE TypeName = ?
+            """
+            cursor.execute(sql_query, (currentflighttypeid,))
+            connection.commit()
+            self.FTtable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Flight Type Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
         
     def viewFT(self):
         connection = pyodbc.connect(
@@ -624,32 +708,30 @@ class flightStatusWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        
-        deleteFS = self.deleteFS.text()
-        
-        sql_query = """
-        DELETE FROM FlightStatusTable
-        WHERE FlightStatus = ?
-        """
-        cursor.execute(sql_query, (deleteFS))
-        connection.commit()
-        
-        cursor.execute("select * from FlightStatusTable")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.FStable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.FStable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Flight Status deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
+        DelRow = self.FStable.currentRow()
+        if DelRow > -1:
+            currentflightstatid = (self.FStable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM FlightStatusTable
+            WHERE FlightStatus = ?
+            """
+            cursor.execute(sql_query, (currentflightstatid,))
+            connection.commit()
+            self.FStable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Flight Status Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
         
     def viewFS(self):
         connection = pyodbc.connect(
@@ -756,32 +838,30 @@ class AircraftWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        
-        delTailNum = self.delTailNum.text()
-        
-        sql_query = """
-        DELETE FROM Aircraft
-        WHERE TerminalNumber = ?
-        """
-        cursor.execute(sql_query, (delTailNum))
-        connection.commit()
-        
-        cursor.execute("select * from Aircraft")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.ADtable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.ADtable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-                
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Aircraft deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
+        DelRow = self.AircraftTable.currentRow()
+        if DelRow > -1:
+            currentaircraftid = (self.AircraftTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM Aircraft
+            WHERE TailNumber = ?
+            """
+            cursor.execute(sql_query, (currentaircraftid,))
+            connection.commit()
+            self.ADtable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Aircraft Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
         
     def viewAircraft(self):
         connection = pyodbc.connect(
@@ -810,7 +890,70 @@ class AircraftTypeWindow(QtWidgets.QMainWindow):
         self.hide()
         self.ground_window=AircraftManagerWindow()
         self.ground_window.show()
-
+    def addAircraftType(self):
+        #####################################################################################################################################
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+        
+        sql_query = """
+        INSERT INTO AircraftType
+        ([AircraftTypeID], [NameOfAircraft])
+        VALUES (?,?)
+        """
+        
+        Type = self.AircraftType.text()
+        cursor.execute(sql_query, (Type))
+        connection.commit()
+        connection.close() 
+        cursor.execute("select * from Aircraft")
+        # # Fetch all rows and populate the table
+        # for row_index, row_data in enumerate(cursor.fetchall()):
+        #     self.ADtable.insertRow(row_index)
+        #     for col_index, cell_data in enumerate(row_data):
+        #         item = QTableWidgetItem(str(cell_data))
+        #         self.ADtable.setItem(row_index, col_index, item)
+        #     connection.commit()
+        #     connection.close()
+        
+        output = QMessageBox(self)              
+        output.setWindowTitle("Success") 
+        output.setText("Aircraft added successfully!")
+        output.setStandardButtons(QMessageBox.StandardButton.Ok)
+        output.setIcon(QMessageBox.Icon.Information)
+        output.exec()
+        
+    def deleteAircraftType(self):
+        connection = pyodbc.connect(
+        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+        DelRow = self.AircraftTypeTable.currentRow()
+        if DelRow > -1:
+            currentaircrafttypeid = (self.AircraftTypeTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM AircraftType
+            WHERE AircraftTypeId = ?
+            """
+            cursor.execute(sql_query, (currentaircrafttypeid,))
+            connection.commit()
+            self.AircraftTypeTable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Aircraft Type Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+    
 class AirportManagerWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(AirportManagerWindow, self).__init__()
@@ -844,6 +987,34 @@ class airportWindow(QtWidgets.QMainWindow):
         self.Delete.clicked.connect(self.deleteAirport)
         self.airportView.clicked.connect(self.viewAirport)
         self.show()
+        
+        self.country_cities = {
+            'United States': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'San Francisco'],
+            'United Kingdom': ['London', 'Manchester', 'Birmingham', 'Glasgow', 'Edinburgh'],
+            'Canada': ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa'],
+            'Germany': ['Berlin', 'Munich', 'Hamburg', 'Cologne', 'Frankfurt'],
+            'France': ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+            'Japan': ['Tokyo', 'Osaka', 'Kyoto', 'Yokohama', 'Sapporo'],
+            'Australia': ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide'],
+            'India': ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata'],
+            'Pakistan': ['Karachi', 'Lahore', 'Islamabad', 'Rawalpindi', 'Faisalabad'],
+        }
+
+        # Create and populate the country combo box
+        self.Country = QComboBox()
+        self.Country.addItems(self.country_cities.keys())
+        self.Country.currentIndexChanged.connect(self.update_city_combo_box)
+
+        # Create the city combo box
+        self.City = QComboBox()
+        
+    def update_city_combo_box(self, index):
+        # Update the city combo box based on the selected country
+        selected_country = self.Country.currentText()
+        cities = self.country_cities.get(selected_country, [])
+        self.City.clear()
+        self.City.addItems(cities)
+        
     def open_airportManager(self):
         self.hide()
         self.ground_window=AirportManagerWindow()
@@ -889,48 +1060,30 @@ class airportWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        
-        delAirportName = self.delAirportName.text()
-        
-        sql_query = """
-        DELETE FROM Airports
-        WHERE AirportName = ?
-        """
-        cursor.execute(sql_query, (delAirportName))
-        connection.commit()
-        
-        cursor.execute("select * from Airports")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.AirportTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.AirportTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Airport deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
-        
-    def viewAirport(self):
-        connection = pyodbc.connect(
-        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        
-        cursor.execute("select * from Airports")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.AirportTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.AirportTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
+        DelRow = self.AirportTable.currentRow()
+        if DelRow > -1:
+            currentairportid = (self.AirportTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM Airports
+            WHERE AirportName = ?
+            """
+            cursor.execute(sql_query, (currentairportid,))
+            connection.commit()
+            self.AirportTable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Airport Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
         
 class airlineWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -990,32 +1143,30 @@ class airlineWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        
-        delAirline = self.delAirline.text()
-        
-        sql_query = """
-        DELETE FROM Airline
-        WHERE AirlineName = ?
-        """
-        cursor.execute(sql_query, (delAirline))
-        connection.commit()
-        
-        cursor.execute("select * from Airline")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.AirlineTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.AirlineTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Airline deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
+        DelRow = self.AirlineTable.currentRow()
+        if DelRow > -1:
+            currentairlineid = (self.AirlineTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM Airline
+            WHERE AirlineId = ?
+            """
+            cursor.execute(sql_query, (currentairlineid,))
+            connection.commit()
+            self.AirlineTable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Airline Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
         
     def view_airline(self):
         connection = pyodbc.connect(
@@ -1088,112 +1239,40 @@ class AdminWindow(QtWidgets.QMainWindow):
             self.AdminTable.setItem(row_count, 0, item1 )
             self.AdminTable.setItem(row_count, 1, item2)
             self.AdminTable.setItem(row_count, 2, item3)
-            
-        # cursor.execute(sql_query, (RunwayNum, RunwayLen))
-        # connection.commit()
-        # connection.close()
-
+    def deleteUser(self):
+        connection = pyodbc.connect(
+        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+        DelRow = self.AdminTable.currentRow()
+        if DelRow > -1:
+            currentadminid = (self.AdminTable.item(DelRow, 0).text(), )
+            sql_query = """
+            DELETE FROM Admin
+            WHERE Username = ?
+            """
+            cursor.execute(sql_query, (currentadminid,))
+            connection.commit()
+            self.AdminTable.removeRow(DelRow)
+            connection.close()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("User Deleted successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif DelRow < 0 :
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR!") 
+            output.setText("Please select a row to delete")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+               
     def open_main_window(self):
         self.hide()
         self.main_window = MainWindow()
         self.main_window.show()
-
-class GateWindow(QtWidgets.QMainWindow):
-    def __init__(self):
-        super(GateWindow, self).__init__()
-        uic.loadUi("gate.ui", self)
-        self.setWindowTitle("Gate")
-        self.GAddBtn.clicked.connect(self.add_gate)
-        self.show()
-        self.GBackBtn.clicked.connect(self.open_ground_manager)
-        self.GDeleteBtn.clicked.connect(self.deleteGate)
-        self.GViewBtn.clicked.connect(self.viewGate)
-
-    def add_gate(self):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        
-        sql_query = """
-        INSERT INTO Gate
-        ([GateName])
-        VALUES (?)
-        """
-        
-        GateNum = self.GateNum.text()
-        
-        cursor.execute(sql_query, (GateNum))
-        connection.commit()
-        
-        cursor.execute("select * from Gate")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.GateTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.GateTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Gate added successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
-
-    def open_ground_manager(self):
-        self.hide()
-        self.ground_window = GroundManagerWindow()
-        self.ground_window.show()
-        
-    def deleteGate(self):
-        connection = pyodbc.connect(
-        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        
-        DelGateNum = self.DelGateNum.text()
-        
-        sql_query = """
-        DELETE FROM Gate
-        WHERE GateName = ?
-        """
-        cursor.execute(sql_query, (DelGateNum))
-        connection.commit()
-        
-        cursor.execute("select * from Gate")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.GateTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.GateTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Gate deleted successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
-        
-    def viewGate(self):
-        connection = pyodbc.connect(
-        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        cursor.execute("select * from Gate")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.GateTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.GateTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
         
 app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
