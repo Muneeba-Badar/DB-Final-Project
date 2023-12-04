@@ -1,7 +1,7 @@
 # Importing essential modules
 from PyQt6 import QtWidgets, uic
 from PyQt6.QtCore import QDate
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QHeaderView, QMessageBox, QLineEdit, QComboBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QHeaderView, QMessageBox, QLineEdit
 import sys
 import pyodbc
 from datetime import datetime
@@ -20,23 +20,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("Login") # Set window title
         self.setFixedSize(self.size()) #fixed size of screen
         self.show()
-        self.populateComboBox(self.LoginBox)
-    
-    def populateComboBox(self, LoginBox):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        cursor.execute("SELECT Type FROM UserType")
-        data = cursor.fetchall()
-        for row in data:
-            self.LoginBox.addItem(row[0])
-            
-        connection.commit()
-        connection.close()
        
         # Connecting button
         self.NextBtn.clicked.connect(self.Next)
+        # Add users to combo box
+        self.LoginBox.addItem("Ground Manager")
+        self.LoginBox.addItem("Flight Manager")
+        self.LoginBox.addItem("Airport Manager")
+        self.LoginBox.addItem("Aircraft Manager")
+        self.LoginBox.addItem("Admin")
 
         # Instances to store windows
         self.ground_manager_window = None
@@ -44,108 +36,38 @@ class MainWindow(QtWidgets.QMainWindow):
         self.airport_manager_window=None
         self.aircraft_manager_window=None
         self.admin_window = None
-    
-    def Next(self):
-        Username = self.Username.text()
-        Password = self.Password.text()
-        login_as = self.LoginBox.currentText()
 
-        if not Username:
-            self.showErrorMessage("Please enter a username.")
-        elif not Password:
-            self.showErrorMessage("Please enter a password.")
-        elif Username and Password and login_as:
-            if login_as == "Admin":
-                if self.verifyAdminCredentials(Username, Password):
-                    self.open_admin()
-                else:
-                    self.showErrorMessage("Invalid Admin credentials.")
-            elif login_as == "Ground Manager":
-                if self.verifyGMCredentials(Username, Password):
-                    self.open_ground_manager()
-                else:
-                    self.showErrorMessage("Invalid Ground Manager credentials.")
+    def Next(self):   #When the next button is clicked on the login screen
+        
+        Username = self.Username.text() # Getting username text
+        Password = self.Password.text() # Getting password text
+        login_as = self.LoginBox.currentText() # See which user is logging in
+
+        if not Username:    # If no username is not typed, error message will apear
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR") 
+            output.setText("Please enter Username")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning) 
+            output.exec()     
+        elif not Password:    # If no password is not typed, error message will apear
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR") 
+            output.setText("Please enter Password")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning) 
+            output.exec()
+        if Username and Password and login_as:    # If username and passwords accepetd
+            if login_as == "Ground Manager":
+                self.open_ground_manager()  # calls the open_ground_manager func
             elif login_as == "Flight Manager":
-                if self.verifyFMCredentials(Username, Password):
-                    self.open_flight_manager()
-                else:
-                    self.showErrorMessage("Invalid Flight Manager credentials.")
+                self.open_flight_manager()  # calls the open_flight_manager func
+            elif login_as == "Admin":
+                self.open_admin()
             elif login_as == "Airport Manager":
-                if self.verifyAMCredentials(Username, Password):
-                    self.open_airport_manager()
-                else:
-                    self.showErrorMessage("Invalid Airport Manager credentials.")
+                self.open_airport_manager()
             elif login_as == "Aircraft Manager":
-                if self.verifyAIRMCredentials(Username, Password):
-                    self.open_aircraft_manager()
-                else:
-                    self.showErrorMessage("Invalid Aircraft Manager credentials.")
-
-    def verifyAdminCredentials(self, username, password):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        # Check if provided credentials match Admin's records
-        cursor.execute("""
-            SELECT * FROM [User]
-            WHERE Username = ? AND Password = ? AND UserTypeId = 5
-        """, (username, password))
-        return cursor.fetchone() is not None
-    
-    def verifyGMCredentials(self, username, password):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        # Check if provided credentials match Admin's records
-        cursor.execute("""
-            SELECT * FROM [User]
-            WHERE Username = ? AND Password = ? AND UserTypeId = 1
-        """, (username, password))
-        return cursor.fetchone() is not None
-    
-    def verifyAMCredentials(self, username, password):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        # Check if provided credentials match Admin's records
-        cursor.execute("""
-            SELECT * FROM [User]
-            WHERE Username = ? AND Password = ? AND UserTypeId = 2
-        """, (username, password))
-        return cursor.fetchone() is not None
-    def verifyAIRMCredentials(self, username, password):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        # Check if provided credentials match Admin's records
-        cursor.execute("""
-            SELECT * FROM [User]
-            WHERE Username = ? AND Password = ? AND UserTypeId = 3
-        """, (username, password))
-        return cursor.fetchone() is not None
-    def verifyFMCredentials(self, username, password):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        # Check if provided credentials match Admin's records
-        cursor.execute("""
-            SELECT * FROM [User]
-            WHERE Username = ? AND Password = ? AND UserTypeId = 4
-        """, (username, password))
-        return cursor.fetchone() is not None
-
-    def showErrorMessage(self, message):
-        output = QMessageBox(self)
-        output.setWindowTitle("ERROR")
-        output.setText(message)
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Warning)
-        output.exec()
+                self.open_aircraft_manager()
 
     def open_ground_manager(self):   # This function creates
         if not self.ground_manager_window:  # Check if the window instance exists
@@ -921,26 +843,7 @@ class airportWindow(QtWidgets.QMainWindow):
         self.Add.clicked.connect(self.addAirport)
         self.Delete.clicked.connect(self.deleteAirport)
         self.airportView.clicked.connect(self.viewAirport)
-        self.populateComboBox(self.CountryCB)
         self.show()
-    
-    def populateComboBox(self, CountryCB):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        cursor.execute("SELECT country FROM countryTable")
-        data = cursor.fetchall()
-        for row in data:
-            CountryCB.addItem(row.columnName)
-        
-    def update_city_combo_box(self, index):
-        # Update the city combo box based on the selected country
-        selected_country = self.Country.currentText()
-        cities = self.country_cities.get(selected_country, [])
-        self.City.clear()
-        self.City.addItems(cities)
-        
     def open_airportManager(self):
         self.hide()
         self.ground_window=AirportManagerWindow()
@@ -958,8 +861,8 @@ class airportWindow(QtWidgets.QMainWindow):
         """
         
         AirportName = self.AirportName.text()
-        Country = self.CountryCB.currentText()
-        City = self.CityCB.currentText()
+        Country = self.Country.currentText()
+        City = self.City.currentText()
         
         cursor.execute(sql_query, (AirportName, Country, City))
         connection.commit()
@@ -1138,92 +1041,57 @@ class AdminWindow(QtWidgets.QMainWindow):
         self.show()
         self.AAddBtn.clicked.connect(self.addUser)
         self.ABackBtn.clicked.connect(self.open_main_window)
-        self.AViewBtn.clicked.connect(self.viewAdmin)
-        self.populateComboBox(self.Role)
-        self.ADelBtn.clicked.connect(self.deleteUser)
-    
-    def populateComboBox(self, Role):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        cursor.execute("SELECT Type FROM UserType")
-        data = cursor.fetchall()
-        for row in data:
-            self.Role.addItem(row[0])
-            
-        connection.commit()
-        connection.close()
-        
-        
+        # Add users to combo box
+        self.Role.addItem("Ground Manager")
+        self.Role.addItem("Flight Manager")
+        self.Role.addItem("Airport Manager")
+        self.Role.addItem("Aircraft Manager")
+        self.Role.addItem("Admin")
+
     def addUser(self):
         connection = pyodbc.connect(
             f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-
+        
+        sql_query = """
+        INSERT INTO Airports
+        ([AirportID], [AirportName], [Country], [City])
+        VALUES (?, ?, ?, ?)
+        """
+        
         username = self.Username.text()
         password = self.Password.text()
         confirm = self.ConfirmPassword.text()
+        name = self.Name.text()
         role = self.Role.currentText()
-        cursor.execute("""select UserTypeId from UserType where Type = ?""", (role,))
-        roleID = cursor.fetchone()
-
-        if not (username and password and confirm and role):
-            self.showErrorMessage("Please fill in all details.")
-        elif password != confirm:
-            self.showErrorMessage("Passwords do not match.")
-        else:
-            # Insert the new user into the database
-            cursor.execute("""
-                INSERT INTO [User] (username, password, UserTypeId)
-                VALUES (?, ?, ?)
-            """, (username, password, roleID[0]))
-            connection.commit()
-
-            # Update the user table
-            self.updateUserTable()
-
-            self.showSuccessMessage("User added successfully!")
-
-    def showErrorMessage(self, message):
-        output = QMessageBox(self)
-        output.setWindowTitle("ERROR")
-        output.setText(message)
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Warning)
-        output.exec()
-
-    def showSuccessMessage(self, message):
-        output = QMessageBox(self)
-        output.setWindowTitle("Success")
-        output.setText(message)
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
-
-    def open_main_window(self):
-        self.hide()
-        self.main_window = MainWindow()
-        self.main_window.show()
-    
-    def viewAdmin(self):
-        connection = pyodbc.connect(
-            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-        )
-        cursor = connection.cursor()
-        cursor.execute("select * from [User]")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.AdminTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.AdminTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-    def deleteUser(self):
-        pass
+        if not (username and password and confirm and name and role):
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR") 
+            output.setText("You haven't entered all the details yet!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning) 
+            output.exec()
+        elif password!=confirm:
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR") 
+            output.setText("Passwords do not match")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning) 
+            output.exec()
+        elif name and username and (password==confirm) and role:
+            row_count = self.AdminTable.rowCount()
+            self.AdminTable.insertRow(row_count)
+            item1 = QTableWidgetItem(name)
+            item2 = QTableWidgetItem(username)
+            item3 = QTableWidgetItem(role)
+            self.AdminTable.setItem(row_count, 0, item1 )
+            self.AdminTable.setItem(row_count, 1, item2)
+            self.AdminTable.setItem(row_count, 2, item3)
+            
+        # cursor.execute(sql_query, (RunwayNum, RunwayLen))
+        # connection.commit()
+        # connection.close()
 
     def open_main_window(self):
         self.hide()
