@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>811</width>
-    <height>568</height>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,6 +125,24 @@
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="groundReport">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>460</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>View Report</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -132,7 +150,7 @@
      <x>0</x>
      <y>0</y>
      <width>811</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

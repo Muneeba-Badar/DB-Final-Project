@@ -107,6 +107,24 @@
      <string>Airport Manager</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="airportReport">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>410</y>
+      <width>131</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>View Report</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -114,7 +132,7 @@
      <x>0</x>
      <y>0</y>
      <width>812</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
