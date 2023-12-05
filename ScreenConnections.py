@@ -241,8 +241,19 @@ class TerminalWindow(QtWidgets.QMainWindow):
         VALUES (?)
         """
         TerminalNum_2 = self.TerminalNum_2.text()  #Stores Terminal Number
-        
-        if(TerminalNum_2.isnumeric() == False):
+        sql_query_check_existing = "SELECT COUNT(*) FROM Termial WHERE TerminalNumber = ?"
+        # Check if the terminal with the same number already exists
+        cursor.execute(sql_query_check_existing, (TerminalNum_2,))
+        existing_count = cursor.fetchone()[0]
+
+        if existing_count > 0:
+            output = QMessageBox(self)
+            output.setWindowTitle("ERROR")
+            output.setText("Terminal with the given number already exists.")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning)
+            output.exec()
+        elif(TerminalNum_2.isnumeric() == False):
             output = QMessageBox(self)              
             output.setWindowTitle("ERROR") 
             output.setText("Please enter Numeric values only")
@@ -344,7 +355,19 @@ class RunwayWindow(QtWidgets.QMainWindow):
                 
         RunwayNum = self.RunwayNum.text()
         RunwayLen = self.RunwayLen.text()
-        if not(RunwayNum.isnumeric() and RunwayLen.isnumeric()):
+        sql_query_check_existing = "SELECT COUNT(*) FROM Runway WHERE RunwayNumber = ?"
+         # Check if the runway with the same number already exists
+        cursor.execute(sql_query_check_existing, (RunwayNum,))
+        existing_count = cursor.fetchone()[0]
+
+        if existing_count > 0:
+            output = QMessageBox(self)
+            output.setWindowTitle("ERROR")
+            output.setText("Runway with the given number already exists.")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning)
+            output.exec()
+        elif not(RunwayNum.isnumeric() and RunwayLen.isnumeric()):
             output = QMessageBox(self)              
             output.setWindowTitle("ERROR") 
             output.setText("Please enter Numeric values only")
@@ -753,6 +776,7 @@ class AircraftManagerWindow(QtWidgets.QMainWindow):
         self.aircraftBtn.clicked.connect(self.open_aircraft)
         self.amBack.clicked.connect(self.open_main_window)
         self.aircraftTypebtn.clicked.connect(self.open_aircraftType)
+        self.aircraftReport.clicked.connect(self.open_report)
         # self.show()
     def open_main_window(self):
         self.hide()
@@ -766,7 +790,58 @@ class AircraftManagerWindow(QtWidgets.QMainWindow):
         self.hide()
         self.aircraftType_window=AircraftTypeWindow()
         self.aircraftType_window.show()
-         
+    def open_report(self):
+        self.hide()
+        self.report_window=AircraftReportWindow()
+        self.report_window.show()
+class AircraftReportWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(AircraftReportWindow, self).__init__()
+        uic.loadUi("aircraftReport.ui", self)
+        self.setWindowTitle("Aircraft Report")
+        self.AirBack.clicked.connect(self.open_aircraftManager)
+        self.AirView.clicked.connect(self.viewReport)
+        self.populate_combobox(self.AirName)
+        self.show()
+    def populate_combobox(self, AirName):
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        self.AirName.clear()
+        cursor = connection.cursor()
+        cursor.execute("SELECT Name FROM Aircraft group by Name")
+        data = cursor.fetchall()
+        for row in data:
+            self.AirName.addItem(row[0])
+            
+        connection.commit()
+        connection.close()
+        
+    def viewReport(self):
+        connection = pyodbc.connect(
+        f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+        AircraftName =  self.AirName.currentText()
+        self.AirTable.clearContents()
+        sql_query1 = """
+        SELECT TailNumber, Name FROM Aircraft WHERE Name = ?
+        """
+        
+        cursor.execute(sql_query1, (AircraftName))
+        data1 = cursor.fetchall()
+
+        for row_index, row_data in enumerate(data1):
+            self.AirTable.insertRow(row_index)
+            for col_index, value in enumerate(row_data):
+                item = QTableWidgetItem(str(value))
+                self.AirTable.setItem(row_index, col_index, item)
+        connection.close()
+        
+    def open_aircraftManager(self):
+        self.hide()
+        self.ground_window=AircraftManagerWindow()
+        self.ground_window.show()
 class AircraftWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(AircraftWindow, self).__init__()
@@ -776,7 +851,38 @@ class AircraftWindow(QtWidgets.QMainWindow):
         self.ADadd.clicked.connect(self.addAircraft)
         self.ADdel.clicked.connect(self.deleteAircraft)
         self.aircraftView.clicked.connect(self.viewAircraft)
+        self.populateComboBoxAT(self.ATcb)
+        self.populateComboBoxAN(self.ANcb)
         self.show()
+        
+    def populateComboBoxAT(self, ATcb):
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        self.ATcb.clear()
+        cursor = connection.cursor()
+        cursor.execute("select NameOfAircraft from AircraftType")
+        data = cursor.fetchall()
+        for row in data:
+            self.ATcb.addItem(row[0])
+            
+        connection.commit()
+        connection.close()
+    def populateComboBoxAN(self, ANcb):
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        cursor = connection.cursor()
+
+        cursor.execute("select AirlineName from Airline")
+        data = cursor.fetchall()
+        for row in data:
+            self.ANcb.addItem(row[0])
+            
+        connection.commit()
+        connection.close()
+        self.show()
+        
     def open_aircraftManager(self):
         self.hide()
         self.ground_window=AircraftManagerWindow()
@@ -787,29 +893,45 @@ class AircraftWindow(QtWidgets.QMainWindow):
         )
         cursor = connection.cursor()
         
-        sql_query = """
-        INSERT INTO Aircraft
-        ([TailNumber],[Name],[AircraftTypeID],[Capacity],[AirlineId])
-        VALUES (?,?,?,?,?)
-        """
-        
         TailNumber = self.TailNumber.text()
         Name = self.Name.text()
-        AircraftTypeID = self.AircraftTypeID.currentText()
+        AircraftTypeID = self.ATcb.currentText()
         Capacity = self.Capacity.text()
-        AirlineId = self.AirlineId.currentText()
+        AirlineId = self.ANcb.currentText()
         
-        if not (Capacity.isnumeric() and TailNumber.isnumeric()):
+        air_cursor = connection.cursor()
+        air_cursor.execute("SELECT AirlineId FROM Airline WHERE AirlineName = ?", (AirlineId,))
+        air = air_cursor.fetchone()
+        
+        atype_cursor = connection.cursor()
+        atype_cursor.execute("SELECT AircraftTypeID FROM AircraftType WHERE NameOfAircraft = ?", (AircraftTypeID,))
+        atype = atype_cursor.fetchone()
+        
+        cursor.execute("SELECT COUNT(*) FROM Aircraft WHERE TailNumber = ?", (TailNumber,))
+        existing_count = cursor.fetchone()[0]
+
+        if existing_count > 0:
+            output = QMessageBox(self)
+            output.setWindowTitle("ERROR")
+            output.setText("Aircraft with the given TailNumber already exists.")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning)
+            output.exec()
+        elif not (Capacity.isnumeric()):
             output = QMessageBox(self)              
             output.setWindowTitle("ERROR") 
             output.setText("Capacity can only be a numeric value")
             output.setStandardButtons(QMessageBox.StandardButton.Ok)
             output.setIcon(QMessageBox.Icon.Warning) 
             output.exec()
-        else:    
-            cursor.execute(sql_query, (TailNumber, Name, AircraftTypeID, Capacity, AirlineId))
+        else:   
+            sql_query = """
+            INSERT INTO Aircraft
+            ([TailNumber],[Name],[AircraftTypeID],[Capacity],[AirlineId])
+            VALUES (?,?,?,?,?)
+            """ 
+            cursor.execute(sql_query, (TailNumber, Name, atype[0], Capacity, air[0]))
             connection.commit()
-            connection.close()
             self.ADtable.clearContents()
             cursor.execute("select * from Aircraft")
             # Fetch all rows and populate the table
@@ -833,9 +955,9 @@ class AircraftWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        DelRow = self.AircraftTable.currentRow()
+        DelRow = self.ADtable.currentRow()
         if DelRow > -1:
-            currentaircraftid = (self.AircraftTable.item(DelRow, 0).text(), )
+            currentaircraftid = (self.ADtable.item(DelRow, 0).text(), )
             sql_query = """
             DELETE FROM Aircraft
             WHERE TailNumber = ?
@@ -885,6 +1007,7 @@ class AircraftTypeWindow(QtWidgets.QMainWindow):
         self.ATdel.clicked.connect(self.deleteAircraftType)
         self.ATview.clicked.connect(self.viewAircraftType)
         self.show()
+    
     def open_aircraftManager(self):
         self.hide()
         self.ground_window=AircraftManagerWindow()
@@ -897,24 +1020,22 @@ class AircraftTypeWindow(QtWidgets.QMainWindow):
         
         sql_query = """
         INSERT INTO AircraftType
-        ([AircraftTypeID], [NameOfAircraft])
-        VALUES (?,?)
+        ([NameOfAircraft])
+        VALUES (?)
         """
-        
         Type = self.AircraftType.text()
-        cursor.execute(sql_query, (Type))
+        cursor.execute(sql_query, (Type,))
         connection.commit()
-        connection.close() 
         self.ATtable.clearContents()
-        cursor.execute("select * from Aircraft")
+        cursor.execute("select * from AircraftType")
         # Fetch all rows and populate the table
         for row_index, row_data in enumerate(cursor.fetchall()):
-            self.ADtable.insertRow(row_index)
+            self.ATtable.insertRow(row_index)
             for col_index, cell_data in enumerate(row_data):
                 item = QTableWidgetItem(str(cell_data))
-                self.ADtable.setItem(row_index, col_index, item)
-            connection.commit()
-            connection.close()
+                self.ATtable.setItem(row_index, col_index, item)
+        connection.commit()
+        connection.close()
         
         output = QMessageBox(self)              
         output.setWindowTitle("Success") 
@@ -928,16 +1049,16 @@ class AircraftTypeWindow(QtWidgets.QMainWindow):
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        DelRow = self.AircraftTypeTable.currentRow()
+        DelRow = self.ATtable.currentRow()
         if DelRow > -1:
-            currentaircrafttypeid = (self.AircraftTypeTable.item(DelRow, 0).text(), )
+            currentaircrafttypeid = (self.ATtable.item(DelRow, 0).text(), )
             sql_query = """
             DELETE FROM AircraftType
             WHERE AircraftTypeId = ?
             """
             cursor.execute(sql_query, (currentaircrafttypeid[0],))
             connection.commit()
-            self.AircraftTypeTable.removeRow(DelRow)
+            self.ATtable.removeRow(DelRow)
             connection.close()
             output = QMessageBox(self)              
             output.setWindowTitle("Success") 
@@ -1000,65 +1121,92 @@ class airportWindow(QtWidgets.QMainWindow):
         self.Add.clicked.connect(self.addAirport)
         self.Delete.clicked.connect(self.deleteAirport)
         self.airportView.clicked.connect(self.viewAirport)
-        self.populateComboBox(self.CountryCB)
+        self.populateComboBoxCo(self.CountryCB)
+        self.CountryCB.currentIndexChanged.connect(self.populateComboBoxCi)
+        self.populateComboBoxCi(self.CityCB)
         self.show()
     
-    def populateComboBox(self, CountryCB):
+    def populateComboBoxCo(self, CountryCB):
+        connection = pyodbc.connect(
+            f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
+        )
+        self.CountryCB.clear()
+        cursor = connection.cursor()
+        cursor.execute("SELECT  CountryName FROM Country")
+        data = cursor.fetchall()
+        for row in data:
+            self.CountryCB.addItem(row[0])
+            
+        connection.commit()
+        connection.close()
+    def populateComboBoxCi(self, CityCB):
+        selected_country = self.CountryCB.currentText()
+        self.CityCB.clear()
         connection = pyodbc.connect(
             f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        cursor.execute("SELECT country FROM countryTable")
+
+        cursor.execute("""select CountryID from Country where CountryName = ?""", (selected_country,))
+        CountryID = cursor.fetchone()
+
+        cursor.execute("SELECT CityName FROM City WHERE CountryID = ?", (CountryID[0],))
         data = cursor.fetchall()
         for row in data:
-            CountryCB.addItem(row[0])
-        
-    def update_city_combo_box(self, index):
-        # Update the city combo box based on the selected country
-        selected_country = self.Country.currentText()
-        cities = self.country_cities.get(selected_country, [])
-        self.City.clear()
-        self.City.addItems(cities)
+            self.CityCB.addItem(row[0])
+            
+        connection.commit()
+        connection.close()
         
     def open_airportManager(self):
         self.hide()
         self.ground_window=AirportManagerWindow()
         self.ground_window.show()
     def addAirport(self):
+        AirportName = self.AirportName.text()
+        Country = self.CountryCB.currentText()
+        City = self.CityCB.currentText()
         connection = pyodbc.connect(
             f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
         cursor = connection.cursor()
-        
-        sql_query = """
-        INSERT INTO Airports
-        ([AirportName],[City],[Country])
-        VALUES (?,?,?)
-        """
-        
-        AirportName = self.AirportName.text()
-        Country = self.CountryCB.currentText()
-        City = self.CityCB.currentText()
-        
-        cursor.execute(sql_query, (AirportName, Country, City))
-        connection.commit()
-        self.AirportTable.clearContents()
-        cursor.execute("select * from Airports")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.AirportTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.AirportTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Airport added successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
+         # Check if the airport with the same name already exists
+        cursor.execute("SELECT * FROM Airports WHERE AirportName = ?", (AirportName,))
+        existing_airport = cursor.fetchone()
+
+        if existing_airport:
+            output = QMessageBox(self)
+            output.setWindowTitle("ERROR")
+            output.setText("Airport with the same name already exists!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        else:
+            sql_query = """
+            INSERT INTO Airports
+            ([AirportName],[City],[Country])
+            VALUES (?,?,?)
+            """
+            
+            cursor.execute(sql_query, (AirportName, Country, City))
+            connection.commit()
+            self.AirportTable.clearContents()
+            cursor.execute("select * from Airports")
+            # Fetch all rows and populate the table
+            for row_index, row_data in enumerate(cursor.fetchall()):
+                self.AirportTable.insertRow(row_index)
+                for col_index, cell_data in enumerate(row_data):
+                    item = QTableWidgetItem(str(cell_data))
+                    self.AirportTable.setItem(row_index, col_index, item)
+            connection.commit()
+            connection.close()
+            
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Airport added successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
     
     def deleteAirport(self):
         connection = pyodbc.connect(
@@ -1116,6 +1264,7 @@ class airlineWindow(QtWidgets.QMainWindow):
         self.deleteAirline.clicked.connect(self.delete_airline)
         self.viewAircraftBtn.clicked.connect(self.view_airline)
         self.populateComboBoxCo(self.HQCountry)
+        self.HQCountry.currentIndexChanged.connect(self.populateComboBoxCi)
         self.populateComboBoxCi(self.HQCity)
         self.show()
     def open_airportManager(self):
@@ -1127,6 +1276,7 @@ class airlineWindow(QtWidgets.QMainWindow):
         connection = pyodbc.connect(
             f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         )
+        self.HQCountry.clear()
         cursor = connection.cursor()
         cursor.execute("SELECT  CountryName FROM Country")
         data = cursor.fetchall()
@@ -1174,26 +1324,45 @@ class airlineWindow(QtWidgets.QMainWindow):
         Country = self.HQCountry.currentText()
         City = self.HQCity.currentText()
         
-        cursor.execute(sql_query, (AirlineName, ContactP, Phone, Email, City, Country))
-        connection.commit()
-        self.AirlineTable.clearContents()
-        cursor.execute("select * from Airline")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.AirlineTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.AirlineTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
+        # Check if the airline with the same name already exists
+        cursor.execute("SELECT * FROM Airline WHERE AirlineName = ?", (AirlineName,))
+        existing_airline = cursor.fetchone()
+
+        if existing_airline:
+            output = QMessageBox(self)
+            output.setWindowTitle("ERROR")
+            output.setText("Airline with the same name already exists!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        elif not (AirlineName and ContactP and Phone and Email and Country and City):
+            output = QMessageBox(self)              
+            output.setWindowTitle("ERROR") 
+            output.setText("Kindly fill all attributes!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
+        else:
+            cursor.execute(sql_query, (AirlineName, ContactP, Phone, Email, City, Country))
+            connection.commit()
+            self.AirlineTable.clearContents()
+            cursor.execute("select * from Airline")
+            # Fetch all rows and populate the table
+            for row_index, row_data in enumerate(cursor.fetchall()):
+                self.AirlineTable.insertRow(row_index)
+                for col_index, cell_data in enumerate(row_data):
+                    item = QTableWidgetItem(str(cell_data))
+                    self.AirlineTable.setItem(row_index, col_index, item)
+            connection.commit()
+            connection.close()
+            
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Airline added successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
         
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Airline added successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
-    
     def delete_airline(self):
         connection = pyodbc.connect(
         f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
@@ -1339,7 +1508,6 @@ class AdminWindow(QtWidgets.QMainWindow):
         DelRow = self.AdminTable.currentRow()
         if DelRow > -1:
             currentadminid = (self.AdminTable.item(DelRow, 0).text(), )
-            print(currentadminid)
             sql_query = """
             DELETE FROM [User]
             WHERE id = ?
@@ -1391,26 +1559,39 @@ class GateWindow(QtWidgets.QMainWindow):
         """
         
         GateNum = self.GateNum.text()
+        sql_query_check_existing = "SELECT COUNT(*) FROM Gate WHERE GateName = ?"
+
+        # Check if the gate with the same name already exists
+        cursor.execute(sql_query_check_existing, (GateNum,))
+        existing_count = cursor.fetchone()[0]
+
+        if existing_count > 0:
+            output = QMessageBox(self)
+            output.setWindowTitle("ERROR")
+            output.setText("Gate with the given name already exists.")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Warning)
+            output.exec()
+        else:
+            cursor.execute(sql_query, (GateNum))
+            connection.commit()
+            self.GateTable.clearContents()
+            cursor.execute("select * from Gate")
+            # Fetch all rows and populate the table
+            for row_index, row_data in enumerate(cursor.fetchall()):
+                self.GateTable.insertRow(row_index)
+                for col_index, cell_data in enumerate(row_data):
+                    item = QTableWidgetItem(str(cell_data))
+                    self.GateTable.setItem(row_index, col_index, item)
+            connection.commit()
+            connection.close()
         
-        cursor.execute(sql_query, (GateNum))
-        connection.commit()
-        self.GateTable.clearContents()
-        cursor.execute("select * from Gate")
-        # Fetch all rows and populate the table
-        for row_index, row_data in enumerate(cursor.fetchall()):
-            self.GateTable.insertRow(row_index)
-            for col_index, cell_data in enumerate(row_data):
-                item = QTableWidgetItem(str(cell_data))
-                self.GateTable.setItem(row_index, col_index, item)
-        connection.commit()
-        connection.close()
-        
-        output = QMessageBox(self)              
-        output.setWindowTitle("Success") 
-        output.setText("Gate added successfully!")
-        output.setStandardButtons(QMessageBox.StandardButton.Ok)
-        output.setIcon(QMessageBox.Icon.Information)
-        output.exec()
+            output = QMessageBox(self)              
+            output.setWindowTitle("Success") 
+            output.setText("Gate added successfully!")
+            output.setStandardButtons(QMessageBox.StandardButton.Ok)
+            output.setIcon(QMessageBox.Icon.Information)
+            output.exec()
 
     def open_ground_manager(self):
         self.hide()
@@ -1462,6 +1643,8 @@ class GateWindow(QtWidgets.QMainWindow):
                 self.GateTable.setItem(row_index, col_index, item)
         connection.commit()
         connection.close()
+        
+        
         
 app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
