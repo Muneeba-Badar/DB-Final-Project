@@ -14,95 +14,11 @@
    <string>Airports</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>140</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Airport Name:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>180</y>
-      <width>51</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Country:</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="Country">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>190</y>
-      <width>241</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>220</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>City:</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="City">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>230</y>
-      <width>241</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-   </widget>
    <widget class="QPushButton" name="Delete">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>400</y>
+      <x>450</x>
+      <y>380</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -119,8 +35,8 @@
    <widget class="QPushButton" name="Add">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>270</y>
+      <x>280</x>
+      <y>350</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -137,8 +53,8 @@
    <widget class="QPushButton" name="airportBack">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>390</y>
+      <x>720</x>
+      <y>380</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -168,21 +84,6 @@
     </property>
     <property name="text">
      <string>Airport Details</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="AirportName">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>150</y>
-      <width>241</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
     </property>
    </widget>
    <widget class="QTableWidget" name="AirportTable">
@@ -215,47 +116,11 @@
      </property>
     </column>
    </widget>
-   <widget class="QLineEdit" name="delAirportName">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>360</y>
-      <width>241</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>350</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Delete Airport Name:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="airportView">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>390</y>
+      <x>580</x>
+      <y>380</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -268,6 +133,118 @@
     <property name="text">
      <string>View</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>150</y>
+      <width>371</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Add Airport</string>
+    </property>
+    <widget class="QComboBox" name="CountryCB">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>80</y>
+       <width>241</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="CityCB">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>120</y>
+       <width>241</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Airport Name:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>110</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>City:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="AirportName">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>40</y>
+       <width>241</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>70</y>
+       <width>51</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Country:</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

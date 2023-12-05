@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>170</y>
+      <y>200</y>
       <width>81</width>
       <height>16</height>
      </rect>
@@ -35,8 +35,8 @@
    <widget class="QPushButton" name="DelFlightS">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>330</y>
+      <x>160</x>
+      <y>300</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -54,7 +54,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>210</y>
+      <y>240</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -71,7 +71,7 @@
    <widget class="QPushButton" name="flightStatusBack">
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>540</x>
       <y>390</y>
       <width>121</width>
       <height>31</height>
@@ -90,7 +90,7 @@
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>170</y>
+      <y>200</y>
       <width>231</width>
       <height>20</height>
      </rect>
@@ -119,42 +119,6 @@
      <string>Flight Status Details</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="deleteFS">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>290</y>
-      <width>231</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>290</y>
-      <width>111</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Delete Flight Status:</string>
-    </property>
-   </widget>
    <widget class="QTableWidget" name="FStable">
     <property name="geometry">
      <rect>
@@ -178,8 +142,8 @@
    <widget class="QPushButton" name="flightStatusView">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>390</y>
+      <x>290</x>
+      <y>300</y>
       <width>121</width>
       <height>31</height>
      </rect>

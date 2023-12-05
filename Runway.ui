@@ -17,8 +17,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>150</y>
+      <x>50</x>
+      <y>180</y>
       <width>101</width>
       <height>41</height>
      </rect>
@@ -35,8 +35,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>200</y>
+      <x>50</x>
+      <y>230</y>
       <width>101</width>
       <height>41</height>
      </rect>
@@ -53,8 +53,8 @@
    <widget class="QLineEdit" name="RunwayNum">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>160</y>
+      <x>180</x>
+      <y>190</y>
       <width>221</width>
       <height>22</height>
      </rect>
@@ -71,8 +71,8 @@
    <widget class="QLineEdit" name="RunwayLen">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>210</y>
+      <x>180</x>
+      <y>240</y>
       <width>221</width>
       <height>22</height>
      </rect>
@@ -89,10 +89,10 @@
    <widget class="QPushButton" name="RDeleteBtn">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>400</y>
-      <width>151</width>
-      <height>28</height>
+      <x>140</x>
+      <y>350</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -107,10 +107,10 @@
    <widget class="QPushButton" name="RAddBtn">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>250</y>
-      <width>151</width>
-      <height>28</height>
+      <x>210</x>
+      <y>280</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -168,10 +168,10 @@
    <widget class="QPushButton" name="RBackBtn">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>530</x>
       <y>430</y>
-      <width>151</width>
-      <height>28</height>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -183,49 +183,13 @@
      <string>Back</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="DelRunwayNum">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>350</y>
-      <width>221</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>340</y>
-      <width>141</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Delete Runway Number:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="RViewBtn">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>430</y>
-      <width>151</width>
-      <height>28</height>
+      <x>280</x>
+      <y>350</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">

@@ -14,11 +14,11 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="AircraftType">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>170</y>
+      <x>170</x>
+      <y>190</y>
       <width>251</width>
       <height>22</height>
      </rect>
@@ -32,8 +32,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>170</y>
+      <x>70</x>
+      <y>190</y>
       <width>81</width>
       <height>16</height>
      </rect>
@@ -47,11 +47,11 @@
      <string>Aircraft Type:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="ATdel">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>340</y>
+      <x>150</x>
+      <y>300</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -65,11 +65,11 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="ATadd">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>210</y>
+      <x>230</x>
+      <y>230</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -86,7 +86,7 @@
    <widget class="QPushButton" name="aircraftTypeBack">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>540</x>
       <y>370</y>
       <width>121</width>
       <height>31</height>
@@ -105,7 +105,7 @@
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>50</y>
+      <y>30</y>
       <width>201</width>
       <height>51</height>
      </rect>
@@ -119,46 +119,10 @@
      <string>Aircraft Type Details</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QTableWidget" name="ATtable">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>300</y>
-      <width>121</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Delete Aircraft Type:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>300</y>
-      <width>241</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
+      <x>470</x>
       <y>160</y>
       <width>256</width>
       <height>192</height>
@@ -174,6 +138,24 @@
       <string>Aircraft Type</string>
      </property>
     </column>
+   </widget>
+   <widget class="QPushButton" name="ATview">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>300</y>
+      <width>121</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>View</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

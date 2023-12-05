@@ -22,8 +22,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>170</y>
+      <x>60</x>
+      <y>200</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -40,8 +40,8 @@
    <widget class="QPushButton" name="TAddBtn">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>220</y>
+      <x>240</x>
+      <y>250</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -78,8 +78,8 @@
    <widget class="QPushButton" name="DeleteBtn">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>340</y>
+      <x>170</x>
+      <y>300</y>
       <width>121</width>
       <height>28</height>
      </rect>
@@ -114,7 +114,7 @@
    <widget class="QPushButton" name="TBackBtn">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>550</x>
       <y>410</y>
       <width>121</width>
       <height>28</height>
@@ -132,36 +132,8 @@
    <widget class="QLineEdit" name="TerminalNum_2">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>180</y>
-      <width>221</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>290</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Delete Terminal Number:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="DelTerminalNum">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>300</y>
+      <x>190</x>
+      <y>210</y>
       <width>221</width>
       <height>20</height>
      </rect>
@@ -170,8 +142,8 @@
    <widget class="QPushButton" name="TViewBtn">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>410</y>
+      <x>300</x>
+      <y>300</y>
       <width>121</width>
       <height>28</height>
      </rect>

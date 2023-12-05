@@ -17,8 +17,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>180</y>
+      <x>70</x>
+      <y>200</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -35,8 +35,8 @@
    <widget class="QPushButton" name="FTdel">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>340</y>
+      <x>160</x>
+      <y>310</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -53,8 +53,8 @@
    <widget class="QPushButton" name="FlightTypeAdd">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>220</y>
+      <x>230</x>
+      <y>240</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -71,8 +71,8 @@
    <widget class="QPushButton" name="flightTypeBack">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>390</y>
+      <x>570</x>
+      <y>400</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -89,8 +89,8 @@
    <widget class="QLineEdit" name="FlightType">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>180</y>
+      <x>160</x>
+      <y>200</y>
       <width>261</width>
       <height>22</height>
      </rect>
@@ -119,44 +119,11 @@
      <string>Flight Type Details</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>300</y>
-      <width>111</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Delete Flight Type:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="delFTline">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>300</y>
-      <width>261</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-   </widget>
    <widget class="QTableWidget" name="FTtable">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>160</y>
+      <x>470</x>
+      <y>170</y>
       <width>281</width>
       <height>211</height>
      </rect>
@@ -175,8 +142,8 @@
    <widget class="QPushButton" name="flightTypeView">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>390</y>
+      <x>280</x>
+      <y>310</y>
       <width>111</width>
       <height>31</height>
      </rect>
