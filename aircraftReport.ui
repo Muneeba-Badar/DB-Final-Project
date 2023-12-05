@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>635</height>
+    <width>654</width>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>30</y>
+      <x>260</x>
+      <y>20</y>
       <width>221</width>
       <height>61</height>
      </rect>
@@ -35,10 +35,10 @@
      <string>Aircraft Report</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="AirView">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>320</x>
       <y>500</y>
       <width>111</width>
       <height>28</height>
@@ -48,10 +48,10 @@
      <string>View Summary</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="AirBack">
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>460</x>
       <y>500</y>
       <width>111</width>
       <height>28</height>
@@ -79,7 +79,7 @@
      <string>Sort by aircraft name: </string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="AirName">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -88,8 +88,23 @@
       <height>22</height>
      </rect>
     </property>
+    <item>
+     <property name="text">
+      <string>Boeing</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Airbus</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Cargo</string>
+     </property>
+    </item>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="AirTable">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -115,7 +130,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>654</width>
      <height>26</height>
     </rect>
    </property>
